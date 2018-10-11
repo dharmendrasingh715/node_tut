@@ -16,7 +16,7 @@ var handlers = {};
 //Ping handler
 handlers.ping = function(data, callback) {
     callback(200);
-}
+};
 
 //Users handlers
 handlers.users = function(data, callback) {
@@ -26,7 +26,7 @@ handlers.users = function(data, callback) {
     } else {
         callback(405);
     }
-}
+};
 
 // Container for users submethods
 handlers._users = _users;
@@ -39,7 +39,7 @@ handlers.tokens = function(data, callback) {
     } else {
         callback(405);
     }
-}
+};
 
 // Container for token handles
 handlers._tokens = _tokens;
@@ -52,7 +52,7 @@ handlers.checks =function (data, callback) {
     } else {
         callback(405);
     }
-}
+};
 
 // Container for checks handlers
 handlers._checks = _checks;
@@ -60,6 +60,6 @@ handlers._checks = _checks;
 // Not found handler
 handlers.notFound = function(data, callback) {
     callback(404);
-}
+};
 
 module.exports = handlers;

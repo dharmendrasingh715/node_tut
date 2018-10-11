@@ -65,12 +65,12 @@ _checks.post = function(data, callback) {
                                         } else {
                                             callback(500, {'Error': 'Could not update user data with new check'});
                                         }
-                                    })
+                                    });
 
                                 } else {
                                     callback(500, {'Error': 'Could not create the new check'});
                                 }
-                            })
+                            });
                         } else {
                             callback(400, {'Error': 'The user already has the maximum number of checks('+config.maxChecks+')'});
                         }
@@ -85,7 +85,7 @@ _checks.post = function(data, callback) {
     } else {
         callback(400, {'Error': 'Missing required input(s), or input(s) are invalid'});
     }
-}
+};
 
 // Checks - get
 // Required data: id
@@ -108,7 +108,7 @@ _checks.get = function(data, callback) {
                     } else {
                         callback(403);
                     }
-                })
+                });
             } else {
                 callback(404);
             }
@@ -116,7 +116,7 @@ _checks.get = function(data, callback) {
     } else {
         callback(400);
     }
-}
+};
 
 // Checks - put
 // Required data: id
@@ -157,7 +157,7 @@ _checks.put = function(data, callback) {
                                 checkData.successCodes  = successCodes;
                             }
                             if(timeoutSeconds) {
-                                checkData.timeoutSeconds  = timeoutSeconds
+                                checkData.timeoutSeconds  = timeoutSeconds;
                             }
 
                             // Persist the new changes
@@ -167,11 +167,11 @@ _checks.put = function(data, callback) {
                                 } else {
                                     callback(500, {"Error": "Could not update the specified check"});
                                 }
-                            })
+                            });
                         } else {
                             callback(403);
                         }
-                    })
+                    });
                 } else {
                     callback(404, {"Error": "Check id does not exist"});
                 }
@@ -182,7 +182,7 @@ _checks.put = function(data, callback) {
     } else {
         callback(400, {"Error": "Missing required fields"});
     }
-}
+};
 
 // Checks - delete
 _checks.delete = function(data, callback) {
@@ -212,24 +212,24 @@ _checks.delete = function(data, callback) {
                                                 if (!err) {
                                                     callback(200);
                                                 } else {
-                                                    callback(500, {"Error": "Could not update user after deleting check"})
+                                                    callback(500, {"Error": "Could not update user after deleting check"});
                                                 }
-                                            }) 
+                                            });
                                         } else {
                                             callback(500, {"Error": "Could not find check information on the user\'s object"});
                                         }
                                     } else {
                                         callback(500, {"Error":"Could not find the user who created this check"});
                                     }
-                                })
+                                });
                             } else {
                                 callback(500, {"Error": "Could not delete check data"});
                             }
-                       })
+                       });
                     } else {
                         callback(403);
                     }
-                })
+                });
             } else {
                 callback(404);
             }
@@ -237,6 +237,6 @@ _checks.delete = function(data, callback) {
     } else {
         callback(400);
     }
-}
+};
 
 module.exports = _checks;

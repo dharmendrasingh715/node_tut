@@ -20,7 +20,7 @@ helpers.hash = function (string) {
     } else {
         return false;
     }
-}
+};
 
 // Create json object from json
 helpers.parseJsonToObject = function (string) {
@@ -52,12 +52,12 @@ helpers.createRandomString = function (len) {
     }  else {
         return false;
     }
-}
+};
 
 // Sends an SMS message via Twilio
 helpers.sendTwilioSms = function (phone, msg, callback) {
-    var phone = typeof(phone) == "string" && phone.trim().length == 10 ? phone.trim() : false;
-    var msg = typeof(msg) == "string" && msg.trim().length <= 1600 ?  msg.trim() : false;
+    phone = typeof(phone) == "string" && phone.trim().length == 10 ? phone.trim() : false;
+    msg = typeof(msg) == "string" && msg.trim().length <= 1600 ?  msg.trim() : false;
 
     if(phone && msg) {
         // Configure the request payload
@@ -72,15 +72,43 @@ helpers.sendTwilioSms = function (phone, msg, callback) {
 
         // configure the request details
         var requestDetails = {
-            'protocol': 'https',
+            'protocol': 'https:',
             'host': 'api.twilio.com',
             'method': 'POST',
-            'path': ''
-        }
+            'path': '/2010-04-01/Accounts/'+config.twilio.accountSid+'/Messages.json/',
+            'auth': config.twilio.accountSid+':'+config.twilio.authToken,
+            'headers': {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-length': Buffer.byteLength(stringPayload)
+            }
+        };
+
+        // Instantiate the request object
+        var req = https.request(requestDetails, function (res) {
+            //Get status code
+            var status = res.statusCode;
+            if(status == 200 || status == 201) {
+               callback(false);
+            } else {
+                callback('Status code returned as: ' + statusCode);
+            } 
+        });
+
+        // Handle any errors
+        req.on('error', function (e) {
+            callback(e);
+        });
+
+        // Add payload
+        req.write(stringPayload);
+
+        // Send the request
+        req.end();
+
     } else {
         callback('Given parameters are missing or invalid');
     }
-}
+};
 
 // Export the helper
 module.exports = helpers;
