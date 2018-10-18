@@ -107,7 +107,7 @@ lib.list = function (dir, callback) {
             data.forEach(function (filename) {
                 trimmedFileName.push(filename.replace('.json',''));
             });
-            callback(err, data);
+            callback(err, trimmedFileName);
         } else {
             callback(err, data);
         }

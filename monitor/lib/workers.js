@@ -18,7 +18,7 @@ var workers = {};
 // Lookup all the checks, get their data, send to a validator
 workers.gatherAllChecks = function () {
     // Get all the checks
-    _data.list('checks', function (err, checks) {
+    _data.list('checks', function (err, checks) {        
         if (!err && checks.length > 0) {
             checks.forEach(function (check) {
                 // Read the check data
@@ -46,7 +46,7 @@ workers.validateCheckData = function (checkData) {
     checkData.protocol = typeof (checkData.protocol) == 'string' && ['http', 'https'].indexOf(checkData.protocol) > -1 ? checkData.protocol : false;
     checkData.url = typeof (checkData.url) == 'string' && checkData.url.trim().length > 0 ? checkData.url.trim() : false;
     checkData.method = typeof (checkData.method) == 'string' && ['post', 'get', 'put', 'delete'].indexOf(checkData.method) > -1 ? checkData.method : false;
-    checkData.successCodes = typeof (checkData.method) == 'object' && checkData.successCodes instanceof Array && checkData.successCodes.length > 0 ? checkData.successCodes : false;
+    checkData.successCodes = typeof (checkData.successCodes) == 'object' && checkData.successCodes instanceof Array && checkData.successCodes.length > 0 ? checkData.successCodes : false;
     checkData.timeoutSeconds = typeof (checkData.timeoutSeconds) == 'number' &&
         checkData.timeoutSeconds % 1 === 0 &&
         checkData.timeoutSeconds >= 1 && checkData.timeoutSeconds <= 5 ? checkData.timeoutSeconds : false;
@@ -145,7 +145,7 @@ workers.processCheckOutcome = function (checkData, checkOutcome) {
     // Check if check is up or down
     var state = !checkOutcome.error &&
         checkOutcome.responseCode &&
-        checkData.statusCode.indexOf(checkOutcome.responseCode) > -1 ? 'up' : 'down';
+        checkData.successCodes.indexOf(checkOutcome.responseCode) > -1 ? 'up' : 'down';
 
     // Decide if an alert is needed
     var alertWanted = checkData.lastChecked && checkData.state !== state ? true : false;
